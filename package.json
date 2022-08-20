@@ -6,6 +6,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite",
+    "build:uat": "vite build --mode uat",
     "build:prod": "vite build",
     "build:stage": "vite build --mode staging",
     "preview": "vite preview"
