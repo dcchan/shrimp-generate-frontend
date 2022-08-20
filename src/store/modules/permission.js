@@ -36,7 +36,6 @@ const usePermissionStore = defineStore(
       generateRoutes(roles) {
         return new Promise(resolve => {
           // 向后端请求路由数据
-          console.log('routers', routers);
           const res = routers;
           const sdata = JSON.parse(JSON.stringify(res.data))
           const rdata = JSON.parse(JSON.stringify(res.data))

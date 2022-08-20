@@ -6,7 +6,7 @@
         <h1 v-else class="sidebar-title" :style="{ color: sideTheme === 'theme-dark' ? variables.logoTitleColor : variables.logoLightTitleColor }">{{ title }}</h1>
       </router-link>
       <router-link v-else key="expand" class="sidebar-logo-link" to="/">
-        <img v-if="logo" :src="logo" class="sidebar-logo" />
+        <img src="/favicon.svg" class="sidebar-logo" />
         <h1 class="sidebar-title" :style="{ color: sideTheme === 'theme-dark' ? variables.logoTitleColor : variables.logoLightTitleColor }">{{ title }}</h1>
       </router-link>
     </transition>
@@ -15,7 +15,6 @@
 
 <script setup>
 import variables from '@/assets/styles/variables.module.scss'
-import logo from '@/assets/logo/logo.png'
 import useSettingsStore from '@/store/modules/settings'
 
 defineProps({
@@ -25,7 +24,7 @@ defineProps({
   }
 })
 
-const title = ref('若依管理系统');
+const title = ref('代码生成器');
 const settingsStore = useSettingsStore();
 const sideTheme = computed(() => settingsStore.sideTheme);
 </script>
