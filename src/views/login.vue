@@ -150,6 +150,7 @@ function getCache() {
 
 // getCode();
 getCache();
+console.log('心灵的付出没得到回音便会是孤单，记忆滞后太久，会退色，也会更鲜明');
 </script>
 
 <style lang='scss' scoped>
