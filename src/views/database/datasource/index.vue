@@ -23,29 +23,29 @@
       </el-form>
 
       <el-table v-loading="loading" :data="dataList">
-         <el-table-column label="ID" align="center" prop="id" width="80"/>
-         <el-table-column label="类型" align="center" prop="databaseType" width="100" :show-overflow-tooltip="true" />
-         <el-table-column label="主机" align="center" prop="databaseHost" width="300" :show-overflow-tooltip="true" />
-         <el-table-column label="端口" align="center" prop="databasePort" width="80"/>
+        <el-table-column label="ID" align="center" prop="id" width="80"/>
+        <el-table-column label="类型" align="center" prop="databaseType" width="100" :show-overflow-tooltip="true" />
+        <el-table-column label="主机" align="center" prop="databaseHost" width="300" :show-overflow-tooltip="true" />
+        <el-table-column label="端口" align="center" prop="databasePort" width="80"/>
         <el-table-column label="用户名" align="center" prop="username" width="160" :show-overflow-tooltip="true" />
         <el-table-column label="数据库名称" align="center" prop="databaseName" width="160" :show-overflow-tooltip="true" />
         <el-table-column label="前缀" align="center" prop="prefix" width="80" :show-overflow-tooltip="true" />
         <el-table-column label="忽略的字段" align="center" prop="ignoreCloumns" width="160" :show-overflow-tooltip="true" />
-         <el-table-column label="创建时间" align="center" prop="createTime" width="160">
-            <template #default="scope"><span>{{ parseTime(scope.row.createTime) }}</span></template>
-         </el-table-column>
-         <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
-            <template #default="scope">
-               <el-button type="text" icon="Edit" @click="handleUpdate(scope.row)">修改</el-button>
-               <el-button type="text" icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
-            </template>
-         </el-table-column>
+        <el-table-column label="创建时间" align="center" prop="createTime" width="160">
+          <template #default="scope"><span>{{ parseTime(scope.row.createTime) }}</span></template>
+        </el-table-column>
+        <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
+          <template #default="scope">
+             <el-button type="text" icon="Edit" @click="handleUpdate(scope.row)">修改</el-button>
+             <el-button type="text" icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
       </el-table>
       <pagination v-show="total > 0" :total="total" v-model:page="queryParams.current" v-model:limit="queryParams.size" @pagination="getList"/>
 
       <!-- 添加或修改参数配置对话框 -->
       <el-dialog :title="title" v-model="open" width="500px" append-to-body>
-         <el-form ref="configRef" :model="form" :rules="rules" label-width="100px">
+         <el-form ref="editRef" :model="form" :rules="rules" label-width="100px">
             <el-form-item label="类型" prop="databaseType">
                <el-input v-model="form.databaseType" placeholder="请输入类型" />
             </el-form-item>
@@ -124,7 +124,7 @@ function cancel() {
 /** 表单重置 */
 function reset() {
   form.value = {};
-  proxy.resetForm("configRef");
+  proxy.resetForm("editRef");
 }
 /** 搜索按钮操作 */
 function handleQuery() {
@@ -141,7 +141,7 @@ function resetQuery() {
 function handleAdd() {
   reset();
   open.value = true;
-  title.value = "添加参数";
+  title.value = "添加";
 }
 /** 修改按钮操作 */
 function handleUpdate(row) {
@@ -149,12 +149,12 @@ function handleUpdate(row) {
   databaseInfo({id: row.id}).then(res => {
     form.value = res.data;
     open.value = true;
-    title.value = "修改参数";
+    title.value = "修改";
   });
 }
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs["configRef"].validate(valid => {
+  proxy.$refs["editRef"].validate(valid => {
     if (valid) {
       databaseSave(form.value).then(res => {
         if (res.code === 1) {
@@ -172,7 +172,7 @@ function submitForm() {
 }
 /** 删除按钮操作 */
 function handleDelete(row) {
-  proxy.$modal.confirm('是否确认删除参数编号为"' + row.id + '"的数据项？').then(function () {
+  proxy.$modal.confirm('是否确认删除编号为"' + row.id + '"的数据项？').then(function () {
     databaseRemove({id: row.id}).then(res => {
       if (res.code !== 1) {
         proxy.$modal.msgError("删除失败：" + res.msg);
