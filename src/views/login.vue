@@ -76,11 +76,11 @@ const router = useRouter();
 const { proxy } = getCurrentInstance();
 
 const loginForm = ref({
-  username: "",
-  password: "",
+  username: '',
+  password: '',
   rememberMe: false,
-  code: "",
-  uuid: ""
+  code: '',
+  uuid: ''
 });
 
 const loginRules = {
@@ -101,7 +101,7 @@ function handleLogin() {
   proxy.$refs.loginRef.validate(valid => {
     if (valid) {
       loading.value = true;
-      // 勾选了需要记住密码设置在 cookie 中设置记住用户名和密码
+      // 勾选了需要记住密码设置在 localStorage 中设置记住用户名和密码
       if (loginForm.value.rememberMe) {
         localStorage.setItem("username", loginForm.value.username, { expires: 30 });
         localStorage.setItem("password", encrypt(loginForm.value.password), { expires: 30 });
@@ -136,19 +136,20 @@ function getCode() {
   });
 }
 
-function getCookie() {
+function getCache() {
   const username = localStorage.getItem("username");
   const password = localStorage.getItem("password");
   const rememberMe = localStorage.getItem("rememberMe");
+  // 为什么这么多 undefined，null， '' 判断呢。。前端又菜又爱玩
   loginForm.value = {
-    username: username === undefined ? loginForm.value.username : username,
-    password: password === undefined ? loginForm.value.password : decrypt(password),
-    rememberMe: rememberMe === undefined ? false : Boolean(rememberMe)
+    username: username === undefined || username === null || username === '' ? loginForm.value.username : username,
+    password: password === undefined || password === null || password === '' ? loginForm.value.password : decrypt(password),
+    rememberMe: rememberMe ? false : Boolean(rememberMe)
   };
 }
 
 // getCode();
-getCookie();
+getCache();
 </script>
 
 <style lang='scss' scoped>
