@@ -7,8 +7,8 @@
         <el-form-item prop="username">
           <el-input v-model="queryParams.username" placeholder="用户名" clearable style="width: 160px" @keyup.enter="handleQuery"/>
         </el-form-item>
-        <el-form-item prop="databaseName">
-          <el-input v-model="queryParams.databaseName" placeholder="数据库名称" clearable style="width: 160px" @keyup.enter="handleQuery"/>
+        <el-form-item prop="schema">
+          <el-input v-model="queryParams.schema" placeholder="数据库名称" clearable style="width: 160px" @keyup.enter="handleQuery"/>
         </el-form-item>
          <el-form-item style="width: 352px;">
             <el-date-picker v-model="dateRange" value-format="YYYY-MM-DD HH:mm:ss" type="datetimerange" range-separator="-" start-placeholder="开始" end-placeholder="结束"></el-date-picker>
@@ -28,7 +28,7 @@
         <el-table-column label="主机" align="center" prop="databaseHost" width="300" :show-overflow-tooltip="true" />
         <el-table-column label="端口" align="center" prop="databasePort" width="80"/>
         <el-table-column label="用户名" align="center" prop="username" width="160" :show-overflow-tooltip="true" />
-        <el-table-column label="数据库名称" align="center" prop="databaseName" width="160" :show-overflow-tooltip="true" />
+        <el-table-column label="数据库名称" align="center" prop="schema" width="160" :show-overflow-tooltip="true" />
         <el-table-column label="前缀" align="center" prop="prefix" width="80" :show-overflow-tooltip="true" />
         <el-table-column label="忽略的字段" align="center" prop="ignoreCloumns" width="160" :show-overflow-tooltip="true" />
         <el-table-column label="创建时间" align="center" prop="createTime" width="160">
@@ -64,8 +64,8 @@
                </el-form-item>
              </el-col>
              <el-col :sm="24" :lg="12" style="padding-left: 20px">
-               <el-form-item label="数据库名称" prop="databaseName">
-                 <el-input v-model="form.databaseName" placeholder="请输入数据库名称" />
+               <el-form-item label="数据库名称" prop="schema">
+                 <el-input v-model="form.schema" placeholder="请输入数据库名称" />
                </el-form-item>
              </el-col>
              <el-col :sm="24" :lg="12" style="padding-left: 20px">
@@ -111,7 +111,7 @@ const queryParams = ref({
   size: 10,
   databaseHost: undefined,
   username: undefined,
-  databaseName: undefined,
+  schema: undefined,
 });
 const rules = {
   databaseType: [{ required: true, message: "数据库类型不能为空", trigger: "blur" }],
@@ -119,7 +119,7 @@ const rules = {
   databasePort: [{ required: true, message: "端口不能为空", trigger: "blur" }],
   username: [{ required: true, message: "用户名不能为空", trigger: "blur" }],
   password: [{ required: true, message: "密码不能为空", trigger: "blur" }],
-  databaseName: [{ required: true, message: "数据库名称不能为空", trigger: "blur" }],
+  schema: [{ required: true, message: "数据库名称不能为空", trigger: "blur" }],
 }
 
 /** 查询参数列表 */
