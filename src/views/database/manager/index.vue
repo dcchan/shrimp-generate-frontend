@@ -11,7 +11,7 @@
                 <el-table-column align="left" prop="databaseName" width="220" :show-overflow-tooltip="true">
                   <template #default="scope">
                     <el-tooltip class="box-item" effect="dark" placement="top-start" :content="scope.row.databaseHost + ':' + scope.row.databasePort">
-                      <span>{{scope.row.databaseName}}</span>
+                      <span>{{scope.row.databaseSchema}}</span>
                     </el-tooltip>
                   </template>
                 </el-table-column>
