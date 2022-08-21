@@ -88,6 +88,9 @@ export function databasePage(params) {
 export function databaseInfo(params) {
     return request({ url: '/generate/database/info', method: 'get', params });
 }
+export function databaseList(params) {
+    return request({ url: '/generate/database/list', method: 'get', params });
+}
 // 2.4 数据库-连接测试
 export function databaseTest(data) {
     return request({ url: '/generate/database/test', method: 'post', data });

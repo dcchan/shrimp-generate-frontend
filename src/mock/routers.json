@@ -27,6 +27,18 @@
             "noCache":false,
             "link":null
           }
+        },
+        {
+          "name":"managerIndex",
+          "path":"manager/index",
+          "hidden":false,
+          "component":"database/manager/index",
+          "meta":{
+            "title":"数据库管理",
+            "icon":"user",
+            "noCache":false,
+            "link":null
+          }
         }
       ]
     },

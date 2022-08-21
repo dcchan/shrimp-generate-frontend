@@ -44,32 +44,48 @@
       <pagination v-show="total > 0" :total="total" v-model:page="queryParams.current" v-model:limit="queryParams.size" @pagination="getList"/>
 
       <!-- 添加或修改参数配置对话框 -->
-      <el-dialog :title="title" v-model="open" width="500px" append-to-body>
+      <el-dialog :title="title" v-model="open" width="800px" append-to-body>
          <el-form ref="editRef" :model="form" :rules="rules" label-width="100px">
-            <el-form-item label="类型" prop="databaseType">
-               <el-input v-model="form.databaseType" placeholder="请输入类型" />
-            </el-form-item>
-            <el-form-item label="主机" prop="databaseHost">
-               <el-input v-model="form.databaseHost" placeholder="请输入主机" />
-            </el-form-item>
-           <el-form-item label="端口" prop="databasePort">
-             <el-input type="number" v-model="form.databasePort" placeholder="请输入用户名" />
-           </el-form-item>
-           <el-form-item label="用户名" prop="username">
-             <el-input v-model="form.username" placeholder="请输入用户名" />
-           </el-form-item>
-           <el-form-item label="密码" prop="password">
-             <el-input type="password" v-model="form.password" placeholder="请输入密码" />
-           </el-form-item>
-           <el-form-item label="数据库名称" prop="databaseName">
-             <el-input v-model="form.databaseName" placeholder="请输入数据库名称" />
-           </el-form-item>
+
+           <el-row :gutter="20">
+             <el-col :sm="24" :lg="12" style="padding-left: 20px">
+               <el-form-item label="类型" prop="databaseType">
+                 <el-input v-model="form.databaseType" placeholder="请输入类型" />
+               </el-form-item>
+             </el-col>
+             <el-col :sm="24" :lg="12" style="padding-left: 20px">
+               <el-form-item label="主机" prop="databaseHost">
+                 <el-input v-model="form.databaseHost" placeholder="请输入主机" />
+               </el-form-item>
+             </el-col>
+             <el-col :sm="24" :lg="12" style="padding-left: 20px">
+               <el-form-item label="端口" prop="databasePort">
+                 <el-input type="number" v-model="form.databasePort" placeholder="请输入用户名" />
+               </el-form-item>
+             </el-col>
+             <el-col :sm="24" :lg="12" style="padding-left: 20px">
+               <el-form-item label="数据库名称" prop="databaseName">
+                 <el-input v-model="form.databaseName" placeholder="请输入数据库名称" />
+               </el-form-item>
+             </el-col>
+             <el-col :sm="24" :lg="12" style="padding-left: 20px">
+               <el-form-item label="用户名" prop="username">
+                 <el-input v-model="form.username" placeholder="请输入用户名" />
+               </el-form-item>
+             </el-col>
+             <el-col :sm="24" :lg="12" style="padding-left: 20px">
+               <el-form-item label="密码" prop="password">
+                 <el-input type="password" v-model="form.password" placeholder="请输入密码" />
+               </el-form-item>
+             </el-col>
+           </el-row>
             <el-form-item label="备注" prop="comments">
                <el-input v-model="form.remark" type="textarea" placeholder="请输入备注" />
             </el-form-item>
          </el-form>
          <template #footer>
             <div class="dialog-footer">
+               <el-button type="primary" @click="test">测 试</el-button>
                <el-button type="primary" @click="submitForm">确 定</el-button>
                <el-button @click="cancel">取 消</el-button>
             </div>
@@ -79,12 +95,12 @@
 </template>
 
 <script setup name="databasePage">
-import { databasePage, databaseInfo, databaseSave, databaseRemove } from "@/api/generate";
+import { databasePage, databaseInfo, databaseSave, databaseRemove, databaseTest } from "@/api/generate";
 const { proxy } = getCurrentInstance();
 
 const dataList = ref([]);
 const open = ref(false);
-const loading = ref(true);
+const loading = ref(false);
 const total = ref(0);
 const title = ref("");
 const dateRange = ref([]);
@@ -152,6 +168,20 @@ function handleUpdate(row) {
     title.value = "修改";
   });
 }
+function test() {
+  proxy.$refs["editRef"].validate(valid => {
+    if (valid) {
+      databaseTest(form.value).then(res => {
+        if (res.code === 1) {
+          proxy.$modal.msgSuccess('连接成功');
+        } else {
+          proxy.$moda.msgError(res.msg);
+        }
+      });
+    }
+  });
+}
+
 /** 提交按钮 */
 function submitForm() {
   proxy.$refs["editRef"].validate(valid => {
