@@ -24,13 +24,14 @@
                v-model="activeName"
                type="border-card"
                class="demo-tabs"
-               @tab-click="setTabsData"
-           >
-             <el-tab-pane label="数据表表" name="tables">
+               @tab-click="setTabsData">
+             <el-tab-pane label="数据表" name="tables">
                <tables ref="tablesRef"/>
              </el-tab-pane>
              <el-tab-pane label="DDL入库" name="ddl">DDL入库-未完成</el-tab-pane>
              <el-tab-pane label="DML入库" name="dml">DML入库-未完成</el-tab-pane>
+             <el-tab-pane label="字段备注检测" name="columnCheck">字段备注检测-未完成</el-tab-pane>
+             <el-tab-pane label="SQL生成对象" name="sqlObj">SQL生成对象-未完成</el-tab-pane>
            </el-tabs>
          </el-col>
       </el-row>
@@ -45,6 +46,7 @@ import { databaseList } from "@/api/generate";
 const router = useRouter();
 const { proxy } = getCurrentInstance();
 
+const database = ref({});
 const abList = ref([]);
 const loading = ref(false);
 const activeName = ref('tables');
@@ -67,18 +69,17 @@ function getDatabaseList() {
 
 function selectRow(row) {
   activeName.value = 'tables';
+  database.value = row;
   const refStr = activeName.value + 'Ref';
-  proxy.$refs[refStr].setData(row);
+  proxy.$refs[refStr].setData(database.value);
 }
 
 function setTabsData(pane, event) {
-  /*
   if (pane) {
     activeName.value = pane.props.name;
   }
   const refStr = activeName.value + 'Ref';
-  proxy.$refs[refStr].setData(device.value.snNo);
-  */
+  proxy.$refs[refStr].setData(database.value);
 }
 
 
