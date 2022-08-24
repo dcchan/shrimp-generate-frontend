@@ -30,7 +30,9 @@
              </el-tab-pane>
              <el-tab-pane label="DDL入库" name="ddl">DDL入库-未完成</el-tab-pane>
              <el-tab-pane label="DML入库" name="dml">DML入库-未完成</el-tab-pane>
-             <el-tab-pane label="字段备注检测" name="columnCheck">字段备注检测-未完成</el-tab-pane>
+             <el-tab-pane label="字段不一致检测" name="columnCheck">
+               <column-check ref="columnCheckRef"/>
+             </el-tab-pane>
              <el-tab-pane label="SQL生成对象" name="sqlObj">SQL生成对象-未完成</el-tab-pane>
            </el-tabs>
          </el-col>
@@ -40,6 +42,7 @@
 
 <script setup name="DatabaseManager">
 import tables from './tables';
+import columnCheck from './columnCheck';
 import { databaseList } from "@/api/generate";
 
 const router = useRouter();

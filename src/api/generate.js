@@ -103,6 +103,10 @@ export function databaseTables(params) {
 export function databaseTableColumns(params) {
     return request({ url: '/generate/database/table/columns', method: 'get', params });
 }
+// 2.7 数据库-数据字段检测
+export function databaseColumnChek(params) {
+    return request({ url: '/generate/database/column/check', method: 'get', params });
+}
 // 6.1 变量-分页
 export function variablesPage(params) {
     return request({ url: '/generate/variables/page', method: 'get', params });
