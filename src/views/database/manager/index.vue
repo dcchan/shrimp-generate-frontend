@@ -11,7 +11,7 @@
                 <el-table-column align="left" prop="databaseName" width="220" :show-overflow-tooltip="true">
                   <template #default="scope">
                     <el-tooltip class="box-item" effect="dark" placement="top-start" :content="scope.row.databaseHost + ':' + scope.row.databasePort">
-                      <span>{{scope.row.databaseSchema}}</span>
+                      <span>{{scope.row.tableSchema}}</span>
                     </el-tooltip>
                   </template>
                 </el-table-column>
@@ -82,7 +82,7 @@ function setTabsData(pane, event) {
 }
 
 function tableRowClassName(row, rowIndex){
-  if (row.row.databaseSchema === database.value.databaseSchema) {
+  if (row.row.tableSchema === database.value.tableSchema) {
     return 'selected-row'
   }
   return ''

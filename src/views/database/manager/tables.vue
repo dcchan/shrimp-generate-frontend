@@ -3,7 +3,7 @@
     <el-card class="box-card">
       <template #header>
         <div class="card-header">
-          <span>{{database.databaseSchema}}</span>
+          <span>{{database.tableSchema}}</span>
         </div>
       </template>
       <el-table :data="tableList" @cell-click="getColumns">
