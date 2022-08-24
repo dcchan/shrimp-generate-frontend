@@ -34,7 +34,7 @@
         <el-table-column label="创建时间" align="center" prop="createTime" width="160">
           <template #default="scope"><span>{{ parseTime(scope.row.createTime) }}</span></template>
         </el-table-column>
-        <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
+        <el-table-column label="操作" fixed="right" align="center" width="150" class-name="small-padding fixed-width">
           <template #default="scope">
              <el-button type="text" icon="Edit" @click="handleUpdate(scope.row)">修改</el-button>
              <el-button type="text" icon="Delete" @click="handleDelete(scope.row)">删除</el-button>

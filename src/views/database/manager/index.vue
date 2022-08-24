@@ -7,7 +7,7 @@
                <el-input v-model="queryParams.keyword" placeholder="查询" clearable prefix-icon="Search" style="margin-bottom: 20px" @keyup.enter="getDatabaseList"/>
             </div>
             <div class="head-container">
-              <el-table v-loading="loading" :data="abList" :show-header="false" @cell-click="selectRow">
+              <el-table v-loading="loading" :data="abList" :show-header="false" @cell-click="selectRow" :row-class-name="tableRowClassName">
                 <el-table-column align="left" prop="databaseName" width="220" :show-overflow-tooltip="true">
                   <template #default="scope">
                     <el-tooltip class="box-item" effect="dark" placement="top-start" :content="scope.row.databaseHost + ':' + scope.row.databasePort">
@@ -35,7 +35,6 @@
            </el-tabs>
          </el-col>
       </el-row>
-
    </div>
 </template>
 
@@ -82,6 +81,18 @@ function setTabsData(pane, event) {
   proxy.$refs[refStr].setData(database.value);
 }
 
+function tableRowClassName(row, rowIndex){
+  if (row.row.databaseSchema === database.value.databaseSchema) {
+    return 'selected-row'
+  }
+  return ''
+}
 
 getDatabaseList();
 </script>
+
+<style>
+.el-table .selected-row {
+  --el-table-tr-bg-color: var(--el-color-primary-light-6);
+}
+</style>
