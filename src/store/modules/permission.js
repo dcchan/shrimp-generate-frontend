@@ -87,7 +87,17 @@ function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false) {
       } else if (route.component === 'InnerLink') {
         route.component = InnerLink
       } else {
-        route.component = loadView(route.component)
+        let component = route.component;
+        if (component.indexOf('views/') > 0) {
+          component = component.substring(component.indexOf('views/') + 6);
+        }
+        if (component.startsWith('/')) {
+          component = component.substring(1);
+        }
+        if (component.lastIndexOf('.vue') > 0) {
+          component = component.substring(0, component.lastIndexOf('.vue'));
+        }
+        route.component = loadView(component)
       }
     }
     if (route.children != null && route.children && route.children.length) {
