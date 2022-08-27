@@ -6,7 +6,7 @@
           <span>{{database.tableSchema}}</span>
         </div>
       </template>
-      <el-table :data="tableList" @cell-click="getColumns">
+      <el-table :data="tableList">
         <el-table-column label="表名" align="left" prop="tableName" width="120" :show-overflow-tooltip="true"/>
         <el-table-column label="备注" align="left" prop="tableComment" width="120" :show-overflow-tooltip="true"/>
         <el-table-column label="字符集" align="center" prop="tableCollation" width="128"/>
