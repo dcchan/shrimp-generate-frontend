@@ -1,0 +1,14 @@
+[
+  {
+    "key":"SYSTEM",
+    "value":"SYSTEM",
+    "label":"系统",
+    "elTagType":"info"
+  },
+  {
+    "key":"CUSTOM",
+    "value":"CUSTOM",
+    "label":"自定义",
+    "elTagType":"primary"
+  }
+]

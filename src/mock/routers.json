@@ -43,6 +43,34 @@
       ]
     },
     {
+      "name":"Template",
+      "path":"/template",
+      "hidden":false,
+      "redirect":"noRedirect",
+      "component":"Layout",
+      "alwaysShow":true,
+      "meta":{
+        "title":"模板管理",
+        "icon":"system",
+        "noCache":false,
+        "link":null
+      },
+      "children":[
+        {
+          "name":"system",
+          "path":"apis",
+          "hidden":false,
+          "component":"template/system/index",
+          "meta":{
+            "title":"系统模板",
+            "icon":"user",
+            "noCache":false,
+            "link":null
+          }
+        }
+      ]
+    },
+    {
       "name":"Service",
       "path":"/service",
       "hidden":false,
