@@ -9,7 +9,7 @@
         </el-form-item>
         -->
         <el-form-item prop="tempName">
-          <el-input v-model="queryParams.tempName" placeholder="模板名称" clearable style="width: 160px" @keyup.enter="handleQuery"/>
+          <el-input v-model="queryParams.tempName" placeholder="模板名称" clearable style="width: 300px" @keyup.enter="handleQuery"/>
         </el-form-item>
          <el-form-item>
             <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
@@ -23,9 +23,7 @@
       <el-table v-loading="loading" :data="dataList">
         <el-table-column label="ID" align="center" prop="id" width="80"/>
         <el-table-column label="模板类型" align="center" prop="tempType" width="100" :show-overflow-tooltip="true">
-          <template #default="scope">
-            <dict-tag :options="TempType" :value="scope.row.tempType" />
-          </template>
+          <template #default="scope"><dict-tag :options="TempType" :value="scope.row.tempType" /></template>
         </el-table-column>
         <el-table-column label="模板名称" align="left" prop="tempName" width="200" :show-overflow-tooltip="true" />
         <el-table-column label="模板说明" align="left" prop="tempDesc" width="200" :show-overflow-tooltip="true" />
@@ -52,7 +50,9 @@
            <el-row :gutter="20">
              <el-col :sm="24" :lg="12" style="padding-left: 20px">
                <el-form-item label="模板类型" prop="tempType">
-                 <el-input v-model="form.tempType" placeholder="请输入模板类型" />
+                 <el-select v-model="form.tempType" placeholder="模板类型" style="width: 200px">
+                   <el-option v-for="item in TempType" :key="item.value" :label="item.label" :value="item.value"/>
+                 </el-select>
                </el-form-item>
              </el-col>
              <el-col :sm="24" :lg="12" style="padding-left: 20px">

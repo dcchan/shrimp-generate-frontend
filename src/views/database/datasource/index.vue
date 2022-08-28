@@ -24,7 +24,9 @@
 
       <el-table v-loading="loading" :data="dataList">
         <el-table-column label="ID" align="center" prop="id" width="80"/>
-        <el-table-column label="类型" align="center" prop="databaseType" width="100" :show-overflow-tooltip="true" />
+        <el-table-column label="类型" align="center" prop="databaseType" width="100" :show-overflow-tooltip="true">
+          <template #default="scope"><dict-tag :options="DatabaseType" :value="scope.row.databaseType" /></template>
+        </el-table-column>
         <el-table-column label="主机" align="center" prop="databaseHost" width="300" :show-overflow-tooltip="true" />
         <el-table-column label="端口" align="center" prop="databasePort" width="80"/>
         <el-table-column label="用户名" align="center" prop="username" width="160" :show-overflow-tooltip="true" />
@@ -96,6 +98,7 @@
 
 <script setup name="databasePage">
 import { databasePage, databaseInfo, databaseSave, databaseRemove, databaseTest } from "@/api/generate";
+import DatabaseType from '@/mock/dict/DatabaseType'
 const { proxy } = getCurrentInstance();
 
 const dataList = ref([]);
