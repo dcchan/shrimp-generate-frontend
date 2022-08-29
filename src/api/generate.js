@@ -20,6 +20,10 @@ export function publicUserLogin(data) {
 export function persionalUserInfo(params) {
     return request({ url: '/generate/persional/user/info', method: 'get', params });
 }
+// 3.4 模板-用户模板删除
+export function templateSystemAndCustomOptions(data) {
+    return request({ url: '/generate/template/system/and/custom/options', method: 'post', data });
+}
 // 3.1 模板-用户模板分页
 export function templateCustomPage(params) {
     return request({ url: '/generate/template/custom/page', method: 'get', params });
@@ -76,13 +80,13 @@ export function templateSystemSave(data) {
 export function templateSystemRemove(data) {
     return request({ url: '/generate/template/system/remove', method: 'post', data });
 }
-// 2.3 数据库-删除
-export function databaseRemove(data) {
-    return request({ url: '/generate/database/remove', method: 'post', data });
-}
 // 2.2 数据库-保存
 export function databaseSave(data) {
     return request({ url: '/generate/database/save', method: 'post', data });
+}
+// 2.3 数据库-删除
+export function databaseRemove(data) {
+    return request({ url: '/generate/database/remove', method: 'post', data });
 }
 // 2.8 数据库-SQL解析
 export function databaseSqlAnalysis(params) {
