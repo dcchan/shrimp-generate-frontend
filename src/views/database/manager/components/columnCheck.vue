@@ -1,6 +1,5 @@
 <template>
-  <div class="app-container" style="padding: 0px">
-    <el-table :data="columnList">
+  <el-table :data="columnList">
         <el-table-column label="字段名" align="left" prop="columnName" width="120" :show-overflow-tooltip="true"/>
         <el-table-column label="字段数量" align="center" prop="count" width="80"/>
         <el-table-column label="字符集" align="center" prop="collationNames" width="300">
@@ -25,7 +24,6 @@
           </template>
         </el-table-column>
       </el-table>
-  </div>
 </template>
 
 <script setup lang="jsx">

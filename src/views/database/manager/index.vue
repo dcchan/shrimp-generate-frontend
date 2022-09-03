@@ -20,9 +20,9 @@
 
 <script setup name="DatabaseManager">
 import DatabaseSelect from '@/views/components/DatabaseSelect'
-import Tables from './tables';
-import ColumnCheck from './columnCheck';
-import CodeGenerate from './codeGenerate';
+import Tables from './components/tables';
+import ColumnCheck from './components/columnCheck';
+import CodeGenerate from './components/codeGenerate';
 
 const router = useRouter();
 const { proxy } = getCurrentInstance();
