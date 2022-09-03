@@ -1,10 +1,10 @@
 <template>
   <el-row :gutter="20">
     <el-col :span="10" :xs="24">
-      <monaco-editor value="select * from dual" language="sql" @change="changeCode"/>
+      <monaco-editor language="sql" @change="changeCode"/>
     </el-col>
     <el-col :span="4" :xs="24">
-      <div>请选择模板，生成代码</div>
+      <div>选择模板，生成代码</div>
       <el-table :data="templateList" :show-header="false" @cell-click="templateRow" :row-class-name="tableRowClassName">
         <el-table-column align="left" prop="tempName" width="220" :show-overflow-tooltip="true">
           <template #default="scope">
@@ -16,13 +16,14 @@
       </el-table>
     </el-col>
     <el-col :span="10" :xs="24">
-      代码生成的结果-未完成
+      <monaco-editor :value="result" language="sql"/>
     </el-col>
   </el-row>
 </template>
 
 <script setup lang="jsx">
 import { templateSystemAndCustomOptions } from "@/api/generate";
+
 import MonacoEditor from '@/components/MonacoEditor'
 
 const { proxy } = getCurrentInstance();
@@ -31,13 +32,15 @@ defineExpose({setData})
 const database = ref({});
 const templateList = ref([]);
 const form = ref({});
+const codeResult = ref(null);
 
 function setData(val) {
   if (!val) {
     return;
   }
   database.value = val;
-  form.databaseId = database.value.id;
+  form.value.databaseId = database.value.id;
+  form.value.sql = "select 10 from dual";
   getTemplates();
 }
 
@@ -46,12 +49,26 @@ function getTemplates() {
     templateList.value = res.data;
   })
 }
-function changeCode(val) {
-  console.log('changeCode', val);
-  form.value.sql = val;
-}
+
 function templateRow(row) {
   form.value.templateId = row.id;
+  generateCode();
+}
+
+function changeCode(code) {
+  form.value.sql = code;
+}
+
+function generateCode() {
+  if (!form.value.sql) {
+    codeResult.value = '请先填写 SQL';
+    return;
+  }
+  if (!form.value.templateId) {
+    codeResult.value = '请先选择模板';
+    return;
+  }
+  codeResult.value = form.value.sql;
 }
 
 function tableRowClassName(row, rowIndex){
@@ -60,7 +77,6 @@ function tableRowClassName(row, rowIndex){
   }
   return ''
 }
-
 </script>
 <style>
 .el-table .selected-row {
