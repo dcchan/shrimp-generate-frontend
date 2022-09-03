@@ -19,7 +19,6 @@ const props = defineProps({
 const emit = defineEmits(['change']);
 // defineExpose({setValue})
 const { proxy } = getCurrentInstance();
-const initCode = ref(null);
 const codeEditor = ref(null);
 
 onMounted(() => {
@@ -27,7 +26,6 @@ onMounted(() => {
 })
 
 watch(() => props.value, val => {
-  console.log(val);
   if (codeEditor.value) {
     setValue(val);
   }

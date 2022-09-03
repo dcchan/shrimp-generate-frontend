@@ -16,13 +16,13 @@
       </el-table>
     </el-col>
     <el-col :span="10" :xs="24">
-      <monaco-editor :value="result" language="sql"/>
+      <monaco-editor :value="codeResult" language="sql"/>
     </el-col>
   </el-row>
 </template>
 
 <script setup lang="jsx">
-import { templateSystemAndCustomOptions } from "@/api/generate";
+import { templateSystemAndCustomOptions, databaseSqlAnalysis } from "@/api/generate";
 
 import MonacoEditor from '@/components/MonacoEditor'
 
@@ -68,7 +68,9 @@ function generateCode() {
     codeResult.value = '请先选择模板';
     return;
   }
-  codeResult.value = form.value.sql;
+  databaseSqlAnalysis(form.value).then(res => {
+    codeResult.value = JSON.stringify(res);
+  })
 }
 
 function tableRowClassName(row, rowIndex){

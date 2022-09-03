@@ -1,6 +1,6 @@
 <template>
   <div class="head-container">
-    <el-input v-model="queryParams.keyword" placeholder="回车查询" clearable prefix-icon="Search" style="margin-bottom: 20px" @keyup.enter="getDatabaseList"/>
+    <el-input v-model="queryParams.keyword" placeholder="回车查询数据库" clearable prefix-icon="Search" style="margin-bottom: 20px" @keyup.enter="getDatabaseList"/>
   </div>
   <div class="head-container">
     <el-table v-loading="loading" :data="dataList" :show-header="false" @cell-click="selectRow" :row-class-name="tableRowClassName">

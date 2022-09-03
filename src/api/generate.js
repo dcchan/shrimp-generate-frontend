@@ -89,8 +89,8 @@ export function databaseRemove(data) {
     return request({ url: '/generate/database/remove', method: 'post', data });
 }
 // 2.8 数据库-SQL解析
-export function databaseSqlAnalysis(params) {
-    return request({ url: '/generate/database/sql/analysis', method: 'get', params });
+export function databaseSqlAnalysis(data) {
+    return request({ url: '/generate/database/sql/analysis', method: 'post', data });
 }
 // 2.0 数据库-分页
 export function databasePage(params) {
