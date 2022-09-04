@@ -4,8 +4,8 @@
       <monaco-editor language="sql" @change="changeCode" width="500px" height="680px"/>
     </el-col>
     <el-col :span="4" :xs="24">
-      <div>选择模板，生成代码</div>
-      <el-table :data="templateList" :show-header="false" @cell-click="templateRow" :row-class-name="tableRowClassName">
+      <div><el-button type="primary" icon="Search" @click="genCode">生成代码</el-button></div>
+      <el-table :data="templateList" :show-header="false" @cell-click="genCode" :row-class-name="tableRowClassName">
         <el-table-column align="left" prop="tempName" width="220" :show-overflow-tooltip="true">
           <template #default="scope">
             <el-tooltip class="box-item" effect="dark" placement="top-start" :content="scope.row.tempType + ':' + scope.row.tempSubfix">
@@ -50,7 +50,7 @@ function getTemplates() {
   })
 }
 
-function templateRow(row) {
+function genCode(row) {
   form.value.templateId = row.id;
   generateCode();
 }
@@ -69,7 +69,7 @@ function generateCode() {
     return;
   }
   databaseSqlAnalysis(form.value).then(res => {
-    codeResult.value = JSON.stringify(res);
+    codeResult.value = res.data.code;
   })
 }
 
