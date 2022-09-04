@@ -1,7 +1,7 @@
 <template>
   <el-row :gutter="20">
     <el-col :span="10" :xs="24">
-      <monaco-editor language="sql" @change="changeCode"/>
+      <monaco-editor language="sql" @change="changeCode" width="500px" height="680px"/>
     </el-col>
     <el-col :span="4" :xs="24">
       <div>选择模板，生成代码</div>
@@ -16,7 +16,7 @@
       </el-table>
     </el-col>
     <el-col :span="10" :xs="24">
-      <monaco-editor :value="codeResult" language="sql"/>
+      <monaco-editor v-model="codeResult" language="sql" width="500px" height="680px"/>
     </el-col>
   </el-row>
 </template>

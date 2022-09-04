@@ -1,18 +1,23 @@
 <template>
-    <div ref="codeEditorBox" style="width:100%; height:800px"></div>
+    <div ref="codeEditorBox" :style="'width:' + props.width + '; height:' + props.height"/>
 </template>
-<script setup lang="jsx"  name="MonacoEditor">
+<script setup name="MonacoEditor">
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api.js";
 import "monaco-editor/esm/vs/basic-languages/javascript/javascript.contribution";
 
 const props = defineProps({
-  value: {
-    type: String, // 需要指定类型
-    default: '', // 建议指定默认值
-  },
+  modelValue: [String],
   language: {
-    type: String, // 需要指定类型
+    type: String,
     default: 'html',
+  },
+  width: {
+    type: String,
+    default: '600px',
+  },
+  height: {
+    type: String,
+    default: '600px',
   },
 });
 
@@ -25,18 +30,17 @@ onMounted(() => {
   initCodeEditor();
 })
 
-watch(() => props.value, val => {
+watch(() => props.modelValue, val => {
   if (codeEditor.value) {
     setValue(val);
   }
 }, {
   immediate: true // 变化后立即执行动作
 });
-
 function initCodeEditor() {
   const codeEditorBox = proxy.$refs['codeEditorBox']
   codeEditor.value = monaco.editor.create(codeEditorBox, {
-    value: props.value, // 编辑器初始显⽰⽂字
+    value: props.modelValue, // 编辑器初始显⽰⽂字
     language: props.language, // 语⾔⽀持⾃⾏查阅 demo
     theme: "hc-black", // 官⽅⾃带三种主题 vs, hc-black, or vs-dark
     selectOnLineNumbers: true, // 显⽰⾏号
