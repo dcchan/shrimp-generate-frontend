@@ -1,5 +1,5 @@
 <template>
-    <el-dialog :title="props.title" v-model="open" @opened="initTempContentEditor" width="1200px" append-to-body>
+    <el-dialog v-model="open" :title="props.title" @opened="initTempContentEditor" width="1200px" append-to-body>
         <el-form ref="editRef" :model="form" :rules="rules" label-width="100px">
             <el-row :gutter="20">
             <el-col :sm="24" :lg="12" style="padding-left: 20px">
@@ -28,7 +28,7 @@
             <el-form-item label="备注" prop="comments">
             <el-input v-model="form.comments" type="textarea" placeholder="请输入备注" />
             </el-form-item>
-            <div id="tempContentEditBox" v-if="open" style="width:100%; height:300px"></div>
+            <div id="tempContentEditBox" style="width:100%; height:300px"></div>
         </el-form>
         <template #footer>
             <div class="dialog-footer">
@@ -54,9 +54,8 @@ const props = defineProps({
   }
 });
 
-let open = props.open;
-let form = props.form;
-console.log(form);
+const open = ref(props.open);
+const form = ref(props.form);
 const editor = ref(null);
 const rules = {
   tempType: [{ required: true, message: "模板类型不能为空", trigger: "blur" }],
@@ -67,15 +66,14 @@ const rules = {
 };
 
 watchEffect(() => {
-  open = props.open;
-  form = props.form;
-})
+  open.value = props.open;
+  form.value = props.form;
+});
 
 function initTempContentEditor() {
   var tempContentEditBox = document.getElementById("tempContentEditBox");
-  console.log(form);
   editor.value = monaco.editor.create(tempContentEditBox, {
-    value: form.tempContent, // 编辑器初始显⽰⽂字
+    value: form.value.tempContent, // 编辑器初始显⽰⽂字
     language: "xml", // 语⾔⽀持⾃⾏查阅 demo
     theme: "hc-black", // 官⽅⾃带三种主题 vs, hc-black, or vs-dark
     selectOnLineNumbers: true, // 显⽰⾏号
