@@ -20,13 +20,13 @@
         </el-form-item>
       </el-form>
 
-      <el-table v-loading="loading" :data="dataList">
+      <el-table width="100%" v-loading="loading" :data="dataList">
         <el-table-column label="ID" align="center" prop="id" width="80"/>
         <el-table-column label="模板类型" align="center" prop="tempType" width="100" :show-overflow-tooltip="true">
           <template #default="scope"><dict-tag :options="TempType" :value="scope.row.tempType" /></template>
         </el-table-column>
-        <el-table-column label="模板名称" align="left" prop="tempName" width="200" :show-overflow-tooltip="true" />
-        <el-table-column label="模板说明" align="left" prop="tempDesc" width="200" :show-overflow-tooltip="true" />
+        <el-table-column label="模板名称" align="left" prop="tempName" :show-overflow-tooltip="true" />
+        <el-table-column label="模板说明" align="left" prop="tempDesc" :show-overflow-tooltip="true" />
         <el-table-column label="模板后缀" align="left" prop="tempSubfix" width="200" :show-overflow-tooltip="true"/>
         <el-table-column label="备注" align="left" prop="comments" width="200" :show-overflow-tooltip="true" />
         <el-table-column label="创建时间" align="center" prop="createTime" width="160">
@@ -42,78 +42,37 @@
           </template>
         </el-table-column>
       </el-table>
+      <EditDialog v-if="open" :open="open" :title="title" :form="form"></EditDialog>
       <pagination v-show="total > 0" :total="total" v-model:page="queryParams.current" v-model:limit="queryParams.size" @pagination="getList"/>
-
-      <!-- 添加或修改参数配置对话框 -->
-      <el-dialog :title="title" v-model="open" @opened="initTempContentEditor" width="1200px" append-to-body>
-         <el-form ref="editRef" :model="form" :rules="rules" label-width="100px">
-           <el-row :gutter="20">
-             <el-col :sm="24" :lg="12" style="padding-left: 20px">
-               <el-form-item label="模板类型" prop="tempType">
-                 <el-select v-model="form.tempType" placeholder="模板类型" style="width: 200px">
-                   <el-option v-for="item in TempType" :key="item.value" :label="item.label" :value="item.value"/>
-                 </el-select>
-               </el-form-item>
-             </el-col>
-             <el-col :sm="24" :lg="12" style="padding-left: 20px">
-               <el-form-item label="模板名称" prop="tempName">
-                 <el-input v-model="form.tempName" placeholder="请输入模板名称" />
-               </el-form-item>
-             </el-col>
-             <el-col :sm="24" :lg="12" style="padding-left: 20px">
-               <el-form-item label="文件后缀" prop="tempSubfix">
-                 <el-input v-model="form.tempSubfix" placeholder="请输入文件后缀" />
-               </el-form-item>
-             </el-col>
-             <el-col :sm="24" :lg="12" style="padding-left: 20px">
-               <el-form-item label="模板描述" prop="tempDesc">
-                 <el-input v-model="form.tempDesc" placeholder="请输入模板描述" />
-               </el-form-item>
-             </el-col>
-           </el-row>
-           <el-form-item label="备注" prop="comments">
-             <el-input v-model="form.comments" type="textarea" placeholder="请输入备注" />
-           </el-form-item>
-           <div id="tempContentEditBox" v-if="open" style="width:100%; height:300px"></div>
-         </el-form>
-         <template #footer>
-            <div class="dialog-footer">
-               <el-button type="primary" @click="submitForm">确 定</el-button>
-               <el-button @click="cancel">取 消</el-button>
-            </div>
-         </template>
-      </el-dialog>
    </div>
 </template>
 
 <script setup name="templateSystemPage">
-import {templateSystemInfo, templateSystemPage, templateSystemRemove, templateSystemSave} from "@/api/generate";
+import {
+  templateSystemInfo,
+  templateSystemPage,
+  templateSystemRemove,
+  templateSystemSave
+} from "@/api/generate";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api.js";
 import "monaco-editor/esm/vs/basic-languages/javascript/javascript.contribution";
 import TempType from '@/mock/dict/TempType'
+import EditDialog from "./editDialog.vue";
 
 const { proxy } = getCurrentInstance();
 
 const dataList = ref([]);
-const open = ref(false);
 const loading = ref(false);
 const total = ref(0);
+const open = ref(false);
 const title = ref("");
-const editor = ref(null);
-
 const form = ref({});
+
 const queryParams = ref({
   current: 1,
   size: 10,
   tempName: undefined,
 });
-const rules = {
-  tempType: [{ required: true, message: "模板类型不能为空", trigger: "blur" }],
-  tempName: [{ required: true, message: "模板名称不能为空", trigger: "blur" }],
-  tempSubfix: [{ required: true, message: "模板后缀不能为空", trigger: "blur" }],
-  tempDesc: [{ required: true, message: "模板说明不能为空", trigger: "blur" }],
-  tempContent: [{ required: true, message: "模板内容不能为空", trigger: "blur" }],
-}
 
 /** 查询参数列表 */
 function getList() {
@@ -124,16 +83,6 @@ function getList() {
   }).finally(val => {
     loading.value = false;
   });
-}
-/** 取消按钮 */
-function cancel() {
-  open.value = false;
-  reset();
-}
-/** 表单重置 */
-function reset() {
-  form.value = {};
-  proxy.resetForm("editRef");
 }
 /** 搜索按钮操作 */
 function handleQuery() {
@@ -162,24 +111,6 @@ function handleUpdate(row) {
   });
 }
 
-/** 提交按钮 */
-function submitForm() {
-  proxy.$refs["editRef"].validate(valid => {
-    if (valid) {
-      templateSystemSave(form.value).then(res => {
-        if (res.code === 1) {
-          proxy.$modal.msgSuccess(form.value.id === undefined ? "新增成功" : "修改成功");
-          open.value = false;
-          getList();
-        } else if (res.code === 0) {
-          proxy.$moda.msgWarning(res.msg);
-        } else {
-          proxy.$moda.msgError(res.msg);
-        }
-      });
-    }
-  });
-}
 /** 删除按钮操作 */
 function handleDelete(row) {
   proxy.$modal.confirm('是否确认删除"' + row.tempName + '"？').then(function () {
@@ -194,36 +125,9 @@ function handleDelete(row) {
   }).catch(() => {});
 }
 
-
-function initTempContentEditor() {
-  var tempContentEditBox = document.getElementById("tempContentEditBox");
-  editor.value = monaco.editor.create(tempContentEditBox, {
-    value: form.value.tempContent, // 编辑器初始显⽰⽂字
-    language: "xml", // 语⾔⽀持⾃⾏查阅 demo
-    theme: "hc-black", // 官⽅⾃带三种主题 vs, hc-black, or vs-dark
-    selectOnLineNumbers: true, // 显⽰⾏号
-    roundedSelection: false,
-    readOnly: false, // 只读
-    cursorStyle: "line", // 光标样式
-    automaticLayout: false, // ⾃动布局
-    glyphMargin: true, // 字形边缘
-    useTabStops: false,
-    fontSize: 12, // 字体⼤⼩
-    autoIndent: true, // ⾃动布局
-    quickSuggestionsDelay: 100, // 代码提⽰延时
-  });
-  // 监听值的变化
-  editor.value.onDidChangeModelContent((event) => {
-    getEditorVal()
-  });
-}
-
-function getEditorVal() {
-  form.value.tempContent = toRaw(editor.value).getValue();
-}
-
-function setEditorVal(val) {
-  toRaw(editor.value).setValue(val);
+/** 表单重置 */
+function reset() {
+  form.value = {};
 }
 
 getList();
