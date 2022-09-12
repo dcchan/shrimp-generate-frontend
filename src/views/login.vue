@@ -25,10 +25,9 @@
           <template #prefix><svg-icon icon-class="password" class="el-input__icon input-icon" /></template>
         </el-input>
       </el-form-item>
-      <!--
-      <el-form-item prop="code" v-if="captchaEnabled">
+      <el-form-item prop="captchaCode">
         <el-input
-          v-model="loginForm.code"
+          v-model="loginForm.captchaCode"
           size="large"
           auto-complete="off"
           placeholder="验证码"
@@ -38,10 +37,9 @@
           <template #prefix><svg-icon icon-class="validCode" class="el-input__icon input-icon" /></template>
         </el-input>
         <div class="login-code">
-          <img :src="codeUrl" @click="getCode" class="login-code-img"/>
+          <img :src="captchaCodeUrl" @click="getCaptchaCode" class="login-code-img"/>
         </div>
       </el-form-item>
-      -->
       <el-checkbox v-model="loginForm.rememberMe" style="margin:0px 0px 25px 0px;">记住密码</el-checkbox>
       <el-form-item style="width:100%;">
         <el-button
@@ -67,7 +65,7 @@
 </template>
 
 <script setup>
-import { getCodeImg } from "@/api/login";
+import { publicCaptchaPicture } from "@/api/sso";
 import { encrypt, decrypt } from "@/utils/jsencrypt";
 import useUserStore from '@/store/modules/user'
 
@@ -79,17 +77,17 @@ const loginForm = ref({
   username: '',
   password: '',
   rememberMe: false,
-  code: '',
-  uuid: ''
+  captchaCode: '',
+  captchaId: ''
 });
 
 const loginRules = {
   username: [{ required: true, trigger: "blur", message: "请输入您的账号" }],
   password: [{ required: true, trigger: "blur", message: "请输入您的密码" }],
-  // code: [{ required: true, trigger: "change", message: "请输入验证码" }]
+  captchaCode: [{ required: true, trigger: "change", message: "请输入验证码" }]
 };
 
-const codeUrl = ref("");
+const captchaCodeUrl = ref("");
 const loading = ref(false);
 // 验证码开关
 const captchaEnabled = ref(true);
@@ -119,21 +117,18 @@ function handleLogin() {
         loading.value = false;
         // 重新获取验证码
         if (captchaEnabled.value) {
-          // getCode();
+          getCaptchaCode();
         }
       });
     }
   });
 }
 
-function getCode() {
-  getCodeImg().then(res => {
-    captchaEnabled.value = res.captchaEnabled === undefined ? true : res.captchaEnabled;
-    if (captchaEnabled.value) {
-      codeUrl.value = "data:image/gif;base64," + res.img;
-      loginForm.value.uuid = res.uuid;
-    }
-  });
+function getCaptchaCode() {
+  publicCaptchaPicture().then(res => {
+    captchaCodeUrl.value = res.data.imageBase64;
+    loginForm.value.captchaId = res.data.captchaId;
+  })
 }
 
 function getCache() {
@@ -148,7 +143,7 @@ function getCache() {
   };
 }
 
-// getCode();
+getCaptchaCode();
 getCache();
 console.log('心灵的付出没得到回音便会是孤单，记忆滞后太久，会退色，也会更鲜明');
 </script>

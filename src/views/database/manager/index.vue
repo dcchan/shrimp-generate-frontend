@@ -7,7 +7,7 @@
          <!--数据库操作-->
          <el-col :span="21" :xs="24">
            <el-tabs v-model="activeName" type="border-card" class="demo-tabs" @tab-click="setTabsData">
-             <el-tab-pane label="数据表" name="tables"><tables ref="tablesRef"/></el-tab-pane>
+             <el-tab-pane label="表" name="tables"><tables ref="tablesRef"/></el-tab-pane>
              <el-tab-pane label="SQL生成对象" name="codeGenerate"><code-generate ref="codeGenerateRef"/></el-tab-pane>
              <el-tab-pane label="字段不一致检测" name="columnCheck"><column-check ref="columnCheckRef"/></el-tab-pane>
              <el-tab-pane label="DDL入库" name="ddl">DDL入库-未完成</el-tab-pane>

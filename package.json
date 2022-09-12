@@ -23,6 +23,7 @@
     "element-plus": "2.1.8",
     "file-saver": "2.0.5",
     "fuse.js": "6.5.3",
+    "js-base64": "^3.7.2",
     "js-cookie": "3.0.1",
     "jsencrypt": "3.2.1",
     "monaco-editor": "^0.34.0",

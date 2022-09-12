@@ -10,8 +10,8 @@
       "component":"Layout",
       "alwaysShow":true,
       "meta":{
-        "title":"数据库管理",
-        "icon":"system",
+        "title":"数据库维护",
+        "icon":"druid",
         "noCache":false,
         "link":null
       },
@@ -23,7 +23,7 @@
           "component":"database/datasource/index",
           "meta":{
             "title":"连接管理",
-            "icon":"user",
+            "icon":"link",
             "noCache":false,
             "link":null
           }
@@ -35,7 +35,7 @@
           "component":"database/manager/index",
           "meta":{
             "title":"数据库管理",
-            "icon":"user",
+            "icon":"guide",
             "noCache":false,
             "link":null
           }
@@ -51,7 +51,7 @@
       "alwaysShow":true,
       "meta":{
         "title":"模板管理",
-        "icon":"system",
+        "icon":"row",
         "noCache":false,
         "link":null
       },
@@ -63,7 +63,7 @@
           "component":"template/system/index",
           "meta":{
             "title":"系统模板",
-            "icon":"user",
+            "icon":"job",
             "noCache":false,
             "link":null
           }
@@ -91,7 +91,7 @@
           "component":"service/apis",
           "meta":{
             "title":"所有接口",
-            "icon":"user",
+            "icon":"code",
             "noCache":false,
             "link":null
           }

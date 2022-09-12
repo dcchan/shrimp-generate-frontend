@@ -30,11 +30,22 @@ export default defineConfig(({ mode, command }) => {
       open: true,
       proxy: {
         // https://cn.vitejs.dev/config/#server-proxy
-        '/dev-api': {
+        '/dev-api/gen': {
           target: 'http://localhost:10997',
           changeOrigin: true,
-          rewrite: (p) => p.replace(/^\/dev-api/, '')
+          rewrite: (p) => p.replace(/^\/dev-api\/gen/, '')
+        },
+        '/dev-api/sso': {
+          target: 'http://localhost:10997',
+          changeOrigin: true,
+          rewrite: (p) => p.replace(/^\/dev-api\/sso/, '')
+        },
+        '/dev-api/spring': {
+          target: 'http://localhost:10997',
+          changeOrigin: true,
+          rewrite: (p) => p.replace(/^\/dev-api\/spring/, '')
         }
+
       }
     },
     //fix:error:stdin>:7356:1: warning: "@charset" must be the first rule in the file
