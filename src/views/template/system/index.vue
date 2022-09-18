@@ -1,13 +1,6 @@
 <template>
    <div class="app-container">
       <el-form :model="queryParams" ref="queryRef" :inline="true" label-width="68px">
-        <!--
-        <el-form-item prop="tempType">
-          <el-select v-model="queryParams.tempType" placeholder="模板类型" clearable style="width: 100px" @keyup.enter="handleQuery">
-            <el-option v-for="item in TempType" :key="item.value" :label="item.label" :value="item.value"/>
-          </el-select>
-        </el-form-item>
-        -->
         <el-form-item prop="tempName">
           <el-input v-model="queryParams.tempName" placeholder="模板名称" clearable style="width: 300px" @keyup.enter="handleQuery"/>
         </el-form-item>
@@ -42,7 +35,11 @@
           </template>
         </el-table-column>
       </el-table>
-      <EditDialog v-if="open" :open="open" :title="title" :form="form"></EditDialog>
+      <EditDialog v-if="open"
+        :open="open"
+        :title="title"
+        :form="form"
+        @submit="handleUpdateSave"></EditDialog>
       <pagination v-show="total > 0" :total="total" v-model:page="queryParams.current" v-model:limit="queryParams.size" @pagination="getList"/>
    </div>
 </template>
@@ -54,8 +51,6 @@ import {
   templateSystemRemove,
   templateSystemSave
 } from "@/api/generate";
-import * as monaco from "monaco-editor/esm/vs/editor/editor.api.js";
-import "monaco-editor/esm/vs/basic-languages/javascript/javascript.contribution";
 import TempType from '@/mock/dict/TempType'
 import EditDialog from "./editDialog.vue";
 
@@ -108,6 +103,22 @@ function handleUpdate(row) {
     form.value = res.data;
     open.value = true;
     title.value = "修改";
+  });
+}
+
+/** 修改按钮操作 */
+function handleUpdateSave(formValue, callback) {
+  console.log('emit 成功');
+  templateSystemSave(formValue).then(res => {
+    if (res.code === 1) {
+      proxy.$modal.msgSuccess(formValue.id === undefined ? "新增成功" : "修改成功");
+      getList();
+      callback();
+    } else if (res.code === 0) {
+      proxy.$moda.msgWarning(res.msg);
+    } else {
+      proxy.$moda.msgError(res.msg);
+    }
   });
 }
 

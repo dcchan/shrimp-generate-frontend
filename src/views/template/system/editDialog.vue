@@ -38,10 +38,10 @@
         </template>
     </el-dialog>
 </template>
-
 <script setup>
 import TempType from '@/mock/dict/TempType';
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api.js";
+import "monaco-editor/esm/vs/basic-languages/javascript/javascript.contribution";
 const props = defineProps({
   open: Boolean,
   title: String,
@@ -53,6 +53,9 @@ const props = defineProps({
     tempContent: String
   }
 });
+
+const { proxy } = getCurrentInstance();
+const emit =  defineEmits('submit');
 
 const open = ref(props.open);
 const form = ref(props.form);
@@ -106,18 +109,13 @@ function reset() {
 
 /** 提交按钮 */
 function submitForm() {
+  console.log('submit');
   proxy.$refs["editRef"].validate(valid => {
+  console.log('valid', valid);
     if (valid) {
-      templateSystemSave(form.value).then(res => {
-        if (res.code === 1) {
-          proxy.$modal.msgSuccess(form.value.id === undefined ? "新增成功" : "修改成功");
-          open.value = false;
-          getList();
-        } else if (res.code === 0) {
-          proxy.$moda.msgWarning(res.msg);
-        } else {
-          proxy.$moda.msgError(res.msg);
-        }
+      console.log('saving...');
+      emit('submit', form.value, () => {
+        open.value = false;
       });
     }
   });
