@@ -1,5 +1,5 @@
 <template>
-    <el-dialog v-model="open" :title="props.title" @opened="initTempContentEditor" width="1200px" append-to-body>
+    <el-dialog v-model="open" :title="props.title" width="1200px" append-to-body>
         <el-form ref="editRef" :model="form" :rules="rules" label-width="100px">
             <el-row :gutter="20">
             <el-col :sm="24" :lg="12" style="padding-left: 20px">
@@ -28,7 +28,7 @@
             <el-form-item label="备注" prop="comments">
             <el-input v-model="form.comments" type="textarea" placeholder="请输入备注" />
             </el-form-item>
-            <div id="tempContentEditBox" style="width:100%; height:300px"></div>
+            <code-editor v-model="form.tempContent"></code-editor>
         </el-form>
         <template #footer>
             <div class="dialog-footer">
@@ -40,8 +40,8 @@
 </template>
 <script setup>
 import TempType from '@/mock/dict/TempType';
-import * as monaco from "monaco-editor/esm/vs/editor/editor.api.js";
-import "monaco-editor/esm/vs/basic-languages/javascript/javascript.contribution";
+import CodeEditor from './codeEditor';
+
 const props = defineProps({
   open: Boolean,
   title: String,
@@ -55,11 +55,10 @@ const props = defineProps({
 });
 
 const { proxy } = getCurrentInstance();
-const emit =  defineEmits('submit');
+const emit =  defineEmits(['submit']);
 
 const open = ref(props.open);
 const form = ref(props.form);
-const editor = ref(null);
 const rules = {
   tempType: [{ required: true, message: "模板类型不能为空", trigger: "blur" }],
   tempName: [{ required: true, message: "模板名称不能为空", trigger: "blur" }],
@@ -72,29 +71,6 @@ watchEffect(() => {
   open.value = props.open;
   form.value = props.form;
 });
-
-function initTempContentEditor() {
-  var tempContentEditBox = document.getElementById("tempContentEditBox");
-  editor.value = monaco.editor.create(tempContentEditBox, {
-    value: form.value.tempContent, // 编辑器初始显⽰⽂字
-    language: "xml", // 语⾔⽀持⾃⾏查阅 demo
-    theme: "hc-black", // 官⽅⾃带三种主题 vs, hc-black, or vs-dark
-    selectOnLineNumbers: true, // 显⽰⾏号
-    roundedSelection: false,
-    readOnly: false, // 只读
-    cursorStyle: "line", // 光标样式
-    automaticLayout: false, // ⾃动布局
-    glyphMargin: true, // 字形边缘
-    useTabStops: false,
-    fontSize: 12, // 字体⼤⼩
-    autoIndent: true, // ⾃动布局
-    quickSuggestionsDelay: 100, // 代码提⽰延时
-  });
-  // 监听值的变化
-  editor.value.onDidChangeModelContent((event) => {
-    getEditorVal()
-  });
-}
 
 /** 取消按钮 */
 function cancel() {
@@ -109,23 +85,12 @@ function reset() {
 
 /** 提交按钮 */
 function submitForm() {
-  console.log('submit');
   proxy.$refs["editRef"].validate(valid => {
-  console.log('valid', valid);
     if (valid) {
-      console.log('saving...');
       emit('submit', form.value, () => {
         open.value = false;
       });
     }
   });
-}
-
-function getEditorVal() {
-  form.value.tempContent = toRaw(editor.value).getValue();
-}
-
-function setEditorVal(val) {
-  toRaw(editor.value).setValue(val);
 }
 </script>
