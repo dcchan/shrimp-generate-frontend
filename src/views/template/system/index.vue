@@ -35,11 +35,15 @@
           </template>
         </el-table-column>
       </el-table>
+<<<<<<< HEAD
       <EditDialog v-if="open"
         :open="open"
         :title="title"
         :form="form"
         @submit="handleUpdateSave"></EditDialog>
+=======
+      <EditDialog v-if="open" :open="open" :title="title" :form="form"></EditDialog>
+>>>>>>> 80c50ebbf6a7840f1c90090fa52bf96c464bb052
       <pagination v-show="total > 0" :total="total" v-model:page="queryParams.current" v-model:limit="queryParams.size" @pagination="getList"/>
    </div>
 </template>
@@ -106,6 +110,7 @@ function handleUpdate(row) {
   });
 }
 
+<<<<<<< HEAD
 /** 修改按钮操作 */
 function handleUpdateSave(formValue, callback) {
   console.log('emit 成功');
@@ -122,6 +127,8 @@ function handleUpdateSave(formValue, callback) {
   });
 }
 
+=======
+>>>>>>> 80c50ebbf6a7840f1c90090fa52bf96c464bb052
 /** 删除按钮操作 */
 function handleDelete(row) {
   proxy.$modal.confirm('是否确认删除"' + row.tempName + '"？').then(function () {
