@@ -28,7 +28,7 @@
             <el-form-item label="备注" prop="comments">
             <el-input v-model="form.comments" type="textarea" placeholder="请输入备注" />
             </el-form-item>
-            <code-editor v-model="form.tempContent"></code-editor>
+            <code-editor v-model="form.tempContent" :config="{'theme': 'vs'}"></code-editor>
         </el-form>
         <template #footer>
             <div class="dialog-footer">
